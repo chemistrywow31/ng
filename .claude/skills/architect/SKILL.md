@@ -63,6 +63,34 @@ When PM submits spec (`docs/specs/YYYYMMDD-xx.md`):
 Explicitly specify tools. Prevent random choices.
 Example: "State Management: Use `Zustand`. DO NOT use `Redux` or `Context API` unless specified."
 
+## Code Reuse Enforcement (DRY 鐵律)
+
+Define in `docs/arch/coding-standards.md`. Violation = Code Review REJECT.
+
+**Mandatory Shared Locations:**
+```
+Backend:
+  /pkg/           → Project-wide utilities (httpclient, validator, errors, timeutil)
+  /internal/      → Domain-specific shared logic
+
+Frontend:
+  /components/ui/ → Shared UI components (Button, Modal, Input, Card...)
+  /hooks/         → Custom hooks (useAuth, useFetch, useForm...)
+  /lib/           → Utilities and API client
+```
+
+**Enforcement Rules:**
+1. Before writing any function/component → Search existing codebase FIRST
+2. Duplicate code detected → REJECT PR, refactor to shared location
+3. Similar logic in 2+ files → Extract to shared module
+4. New utility created → Must be in designated shared location
+
+**Architect Review Checklist:**
+- [ ] No duplicate utility functions across files
+- [ ] Shared components used instead of one-off copies
+- [ ] HTTP client with request_id propagation from `pkg/httpclient`
+- [ ] Common patterns extracted to hooks/utils
+
 ## Response Templates
 
 ### Spec Acknowledgment

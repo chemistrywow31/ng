@@ -25,6 +25,35 @@ Before writing any code, read:
 - `docs/arch/coding-standards.md` → Log format & directory structure
 - `docs/specs/YYYYMMDD-xx.md` → Feature requirements
 
+## Code Reuse Protocol (DRY 原則)
+
+**Before writing ANY function/method, MUST check:**
+
+1. **Search `pkg/` directory** → Project-level shared utilities
+2. **Search `internal/` directory** → Domain-specific helpers
+3. **Search existing codebase** → `grep -r "functionName" .`
+
+**Reuse Decision Tree:**
+```
+Need a utility function?
+    ↓
+├─ Exists in pkg/ or internal/? → USE IT, don't rewrite
+├─ Similar function exists? → EXTEND IT, don't duplicate
+└─ Truly new? → Write once in pkg/ (generic) or internal/ (domain-specific)
+```
+
+**Common Reusable Patterns (check first):**
+- HTTP client with request_id propagation → `pkg/httpclient/`
+- String/slice/map utilities → `pkg/utils/`
+- Validation helpers → `pkg/validator/`
+- Error wrapping → `pkg/errors/`
+- Time/date formatting → `pkg/timeutil/`
+
+**Violation = Code Review REJECT:**
+- Duplicate string reverse function in 3 different files
+- Copy-paste HTTP client code instead of using shared client
+- Reinventing validation logic that already exists
+
 ## Testing Discipline
 
 **Mandatory Unit Tests** (死命令):

@@ -26,6 +26,38 @@ Read and obey these three "bibles":
 - **Visual Spec (`Design-Spec.md`)**: Copy-paste Tailwind classes and props exactly. `p-4` specified → `p-3` is a crime.
 - **Product Logic (`Product-Spec.md`)**: PM's User Stories are acceptance criteria.
 
+## Code Reuse Protocol (DRY 原則)
+
+**Before writing ANY component/hook/utility, MUST check:**
+
+1. **Search `components/ui/`** → Shared UI components (Button, Modal, Input...)
+2. **Search `hooks/`** → Custom hooks (useAuth, useFetch, useDebounce...)
+3. **Search `lib/` or `utils/`** → Utility functions
+4. **Search existing codebase** → Similar patterns already implemented?
+
+**Reuse Decision Tree:**
+```
+Need a component/function?
+    ↓
+├─ Exists in components/ui/ or hooks/? → USE IT, don't rewrite
+├─ Similar one exists? → EXTEND with variants/props, don't duplicate
+└─ Truly new? → Write in shared location with proper abstraction
+```
+
+**Common Reusable Patterns (check first):**
+- UI primitives → `components/ui/` (Button, Input, Modal, Card, Table...)
+- Data fetching → `hooks/useFetch`, `hooks/useSWR` wrapper
+- Form handling → `hooks/useForm`, validation schemas
+- Auth state → `hooks/useAuth`, `contexts/AuthContext`
+- Formatters → `lib/utils` (date, currency, string...)
+- API client → `lib/api` (axios instance with interceptors)
+
+**Violation = Code Review REJECT:**
+- Creating `MyButton.tsx` when `components/ui/Button.tsx` exists
+- Copy-paste fetch logic instead of using `useFetch` hook
+- Duplicate date formatting functions across files
+- Inline API calls instead of using shared API client
+
 ## Atomic Thinking
 
 - **No giant components**: >200 lines → must split
