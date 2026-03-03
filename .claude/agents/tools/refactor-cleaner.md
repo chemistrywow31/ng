@@ -2,7 +2,7 @@
 name: refactor-cleaner
 description: Dead code cleanup and consolidation specialist. Use PROACTIVELY for removing unused code, duplicates, and refactoring. Runs analysis tools (knip, depcheck, ts-prune) to identify dead code and safely removes it.
 tools: ["Read", "Write", "Edit", "Bash", "Grep", "Glob"]
-model: opus
+model: sonnet
 ---
 
 # Refactor & Dead Code Cleaner
@@ -192,62 +192,6 @@ components/Button.tsx (with variant prop)
     "moment": "^2.29.4"     // Replaced by date-fns
   }
 }
-```
-
-## Example Project-Specific Rules
-
-**CRITICAL - NEVER REMOVE:**
-- Privy authentication code
-- Solana wallet integration
-- Supabase database clients
-- Redis/OpenAI semantic search
-- Market trading logic
-- Real-time subscription handlers
-
-**SAFE TO REMOVE:**
-- Old unused components in components/ folder
-- Deprecated utility functions
-- Test files for deleted features
-- Commented-out code blocks
-- Unused TypeScript types/interfaces
-
-**ALWAYS VERIFY:**
-- Semantic search functionality (lib/redis.js, lib/openai.js)
-- Market data fetching (api/markets/*, api/market/[slug]/)
-- Authentication flows (HeaderWallet.tsx, UserMenu.tsx)
-- Trading functionality (Meteora SDK integration)
-
-## Pull Request Template
-
-When opening PR with deletions:
-
-```markdown
-## Refactor: Code Cleanup
-
-### Summary
-Dead code cleanup removing unused exports, dependencies, and duplicates.
-
-### Changes
-- Removed X unused files
-- Removed Y unused dependencies
-- Consolidated Z duplicate components
-- See docs/DELETION_LOG.md for details
-
-### Testing
-- [x] Build passes
-- [x] All tests pass
-- [x] Manual testing completed
-- [x] No console errors
-
-### Impact
-- Bundle size: -XX KB
-- Lines of code: -XXXX
-- Dependencies: -X packages
-
-### Risk Level
-🟢 LOW - Only removed verifiably unused code
-
-See DELETION_LOG.md for complete details.
 ```
 
 ## Error Recovery
